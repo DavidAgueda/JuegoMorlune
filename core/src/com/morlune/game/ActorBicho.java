@@ -27,6 +27,15 @@ public class ActorBicho {
 	private int velocidad = 100;
 //	private float velocidadX ,velocidadY;
 	private Rectangle rectangleBicho;
+	
+	
+	double angulo;
+	double velocidadx ;	
+	double velocidady ;
+	
+	int height = Gdx.graphics.getHeight(); // extraemos el alto y el ancho de la
+	// ventana
+	int width = Gdx.graphics.getWidth();
 
 	public ActorBicho() {
 		// instanci de textura del bicho
@@ -60,12 +69,13 @@ public class ActorBicho {
 		rectangleBicho = new Rectangle(posicionX, posicionY,
 				miBicho.getWidth(), miBicho.getHeight());
 
-		miBicho.rotate(orientar());
+		miBicho.rotate((float)orientar()+180);
 	}
 
 	
-	public float orientar() {
-		float angulo = (float)Math.toDegrees(Math.atan2((Gdx.graphics.getHeight()/2) - posicionInicialY , (Gdx.graphics.getWidth()/2) - posicionInicialX));
+	public double orientar() {
+		angulo = Math.atan2(posicionY-(height/2), posicionX-(width/2));
+		angulo = Math.toDegrees(angulo);
 		return angulo;
 	}
 	
@@ -78,21 +88,43 @@ public class ActorBicho {
 	public void movimiento() {
 		// hacer que se dirijan al centro
 
+//		
+//		if ((Gdx.graphics.getWidth()) *0.5 < posicionX) {
+//			posicionX = posicionX
+//					- (int) ((velocidad) * Gdx.graphics.getDeltaTime());
+//		} else if ((Gdx.graphics.getWidth()) * 0.5 > posicionX) {
+//			posicionX = posicionX
+//					+ (int) (velocidad * Gdx.graphics.getDeltaTime());
+//		}
+//		if ((Gdx.graphics.getHeight()) *0.5 < posicionY) {
+//			posicionY = posicionY
+//					- (int) (velocidad * Gdx.graphics.getDeltaTime());
+//		} else if ((Gdx.graphics.getHeight()) * 0.5 > posicionY) {
+//			posicionY = posicionY
+//					+ (int) (velocidad * Gdx.graphics.getDeltaTime());
+//		}
 		
+		angulo = Math.atan2(posicionY-(height/2), posicionX-(width/2));
+		angulo = Math.toDegrees(angulo);
+		
+		velocidadx = (double) Math.cos((angulo))*100 ;		
+		velocidady = (double) Math.sin((angulo))*100 ;
+		if(velocidadx<0){velocidadx=velocidadx/-1;}
+		if(velocidady<0){velocidady=velocidady/-1;}
 		if ((Gdx.graphics.getWidth()) *0.5 < posicionX) {
-			posicionX = posicionX
-					- (int) ((velocidad) * Gdx.graphics.getDeltaTime());
+			posicionX = posicionX - (int) ((velocidadx) * Gdx.graphics.getDeltaTime());
+			
 		} else if ((Gdx.graphics.getWidth()) * 0.5 > posicionX) {
-			posicionX = posicionX
-					+ (int) (velocidad * Gdx.graphics.getDeltaTime());
+			posicionX = posicionX + (int) (velocidadx * Gdx.graphics.getDeltaTime());
 		}
 		if ((Gdx.graphics.getHeight()) *0.5 < posicionY) {
-			posicionY = posicionY
-					- (int) (velocidad * Gdx.graphics.getDeltaTime());
+			posicionY = posicionY - (int) (velocidady * Gdx.graphics.getDeltaTime());
+			
 		} else if ((Gdx.graphics.getHeight()) * 0.5 > posicionY) {
-			posicionY = posicionY
-					+ (int) (velocidad * Gdx.graphics.getDeltaTime());
+			posicionY = posicionY + (int) (velocidady * Gdx.graphics.getDeltaTime());
 		}
+		
+		
 		
 		// Creo que la solucion esta en eso de variar la velocidad
 		
